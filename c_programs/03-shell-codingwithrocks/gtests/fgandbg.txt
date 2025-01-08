@@ -1,0 +1,5 @@
+ls -l
+sleep 5 ; date ; pwd ; ls
+ls -a & sleep 4 & pwd ; echo hey & sleep 12
+jobs
+exit

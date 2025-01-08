@@ -1,0 +1,7 @@
+lr ; echo "drats" ; pwd
+ipconfig : ls - a ; ls -l
+pwd ; pwd ; pwd ; pwd ; pwd ;
+
+pwd ; pwd ; pwd ;
+
+pwd & pwd & pwd & pwd & pwd & pwd & pwd&

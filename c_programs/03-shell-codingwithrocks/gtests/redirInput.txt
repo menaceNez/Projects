@@ -1,0 +1,5 @@
+sleep 4 & date & sleep 5 &
+
+./text > output.txt
+
+./input < output.txt

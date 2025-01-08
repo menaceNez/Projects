@@ -1,0 +1,17 @@
+./text > output.txt & sleep 14 ; jobs
+
+fg
+
+sleep 10 & sleep 5 & sleep 4 &
+jobs
+fg 
+history
+
+date & sleep 4 & 
+
+sleep 5 ; fg
+history
+
+./input < output.txt
+
+exit

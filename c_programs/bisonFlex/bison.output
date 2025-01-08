@@ -1,0 +1,284 @@
+Grammar
+
+    0 $accept: STMT $end
+
+    1 STMT: EQUAL EXPR
+    2     | STMT EQUAL EXPR
+
+    3 EXPR: EXPR PLUS TERM
+    4     | EXPR MINUS TERM
+    5     | TERM
+
+    6 TERM: TERM MULT FACTOR
+    7     | TERM DIVIDE FACTOR
+    8     | FACTOR
+
+    9 FACTOR: MINUS FACTOR
+   10       | O_PAREN EXPR C_PAREN
+   11       | INT_LITERAL
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    PLUS (258) 3
+    MINUS (259) 4 9
+    DIVIDE (260) 7
+    MULT (261) 6
+    EQUAL (262) 1 2
+    O_PAREN (263) 10
+    C_PAREN (264) 10
+    INT_LITERAL <ival> (265) 11
+
+
+Nonterminals, with rules where they appear
+
+    $accept (11)
+        on left: 0
+    STMT <ival> (12)
+        on left: 1 2
+        on right: 0 2
+    EXPR <ival> (13)
+        on left: 3 4 5
+        on right: 1 2 3 4 10
+    TERM <ival> (14)
+        on left: 6 7 8
+        on right: 3 4 5 6 7
+    FACTOR <ival> (15)
+        on left: 9 10 11
+        on right: 6 7 8 9
+
+
+State 0
+
+    0 $accept: • STMT $end
+
+    EQUAL  shift, and go to state 1
+
+    STMT  go to state 2
+
+
+State 1
+
+    1 STMT: EQUAL • EXPR
+
+    MINUS        shift, and go to state 3
+    O_PAREN      shift, and go to state 4
+    INT_LITERAL  shift, and go to state 5
+
+    EXPR    go to state 6
+    TERM    go to state 7
+    FACTOR  go to state 8
+
+
+State 2
+
+    0 $accept: STMT • $end
+    2 STMT: STMT • EQUAL EXPR
+
+    $end   shift, and go to state 9
+    EQUAL  shift, and go to state 10
+
+
+State 3
+
+    9 FACTOR: MINUS • FACTOR
+
+    MINUS        shift, and go to state 3
+    O_PAREN      shift, and go to state 4
+    INT_LITERAL  shift, and go to state 5
+
+    FACTOR  go to state 11
+
+
+State 4
+
+   10 FACTOR: O_PAREN • EXPR C_PAREN
+
+    MINUS        shift, and go to state 3
+    O_PAREN      shift, and go to state 4
+    INT_LITERAL  shift, and go to state 5
+
+    EXPR    go to state 12
+    TERM    go to state 7
+    FACTOR  go to state 8
+
+
+State 5
+
+   11 FACTOR: INT_LITERAL •
+
+    $default  reduce using rule 11 (FACTOR)
+
+
+State 6
+
+    1 STMT: EQUAL EXPR •
+    3 EXPR: EXPR • PLUS TERM
+    4     | EXPR • MINUS TERM
+
+    PLUS   shift, and go to state 13
+    MINUS  shift, and go to state 14
+
+    $default  reduce using rule 1 (STMT)
+
+
+State 7
+
+    5 EXPR: TERM •
+    6 TERM: TERM • MULT FACTOR
+    7     | TERM • DIVIDE FACTOR
+
+    DIVIDE  shift, and go to state 15
+    MULT    shift, and go to state 16
+
+    $default  reduce using rule 5 (EXPR)
+
+
+State 8
+
+    8 TERM: FACTOR •
+
+    $default  reduce using rule 8 (TERM)
+
+
+State 9
+
+    0 $accept: STMT $end •
+
+    $default  accept
+
+
+State 10
+
+    2 STMT: STMT EQUAL • EXPR
+
+    MINUS        shift, and go to state 3
+    O_PAREN      shift, and go to state 4
+    INT_LITERAL  shift, and go to state 5
+
+    EXPR    go to state 17
+    TERM    go to state 7
+    FACTOR  go to state 8
+
+
+State 11
+
+    9 FACTOR: MINUS FACTOR •
+
+    $default  reduce using rule 9 (FACTOR)
+
+
+State 12
+
+    3 EXPR: EXPR • PLUS TERM
+    4     | EXPR • MINUS TERM
+   10 FACTOR: O_PAREN EXPR • C_PAREN
+
+    PLUS     shift, and go to state 13
+    MINUS    shift, and go to state 14
+    C_PAREN  shift, and go to state 18
+
+
+State 13
+
+    3 EXPR: EXPR PLUS • TERM
+
+    MINUS        shift, and go to state 3
+    O_PAREN      shift, and go to state 4
+    INT_LITERAL  shift, and go to state 5
+
+    TERM    go to state 19
+    FACTOR  go to state 8
+
+
+State 14
+
+    4 EXPR: EXPR MINUS • TERM
+
+    MINUS        shift, and go to state 3
+    O_PAREN      shift, and go to state 4
+    INT_LITERAL  shift, and go to state 5
+
+    TERM    go to state 20
+    FACTOR  go to state 8
+
+
+State 15
+
+    7 TERM: TERM DIVIDE • FACTOR
+
+    MINUS        shift, and go to state 3
+    O_PAREN      shift, and go to state 4
+    INT_LITERAL  shift, and go to state 5
+
+    FACTOR  go to state 21
+
+
+State 16
+
+    6 TERM: TERM MULT • FACTOR
+
+    MINUS        shift, and go to state 3
+    O_PAREN      shift, and go to state 4
+    INT_LITERAL  shift, and go to state 5
+
+    FACTOR  go to state 22
+
+
+State 17
+
+    2 STMT: STMT EQUAL EXPR •
+    3 EXPR: EXPR • PLUS TERM
+    4     | EXPR • MINUS TERM
+
+    PLUS   shift, and go to state 13
+    MINUS  shift, and go to state 14
+
+    $default  reduce using rule 2 (STMT)
+
+
+State 18
+
+   10 FACTOR: O_PAREN EXPR C_PAREN •
+
+    $default  reduce using rule 10 (FACTOR)
+
+
+State 19
+
+    3 EXPR: EXPR PLUS TERM •
+    6 TERM: TERM • MULT FACTOR
+    7     | TERM • DIVIDE FACTOR
+
+    DIVIDE  shift, and go to state 15
+    MULT    shift, and go to state 16
+
+    $default  reduce using rule 3 (EXPR)
+
+
+State 20
+
+    4 EXPR: EXPR MINUS TERM •
+    6 TERM: TERM • MULT FACTOR
+    7     | TERM • DIVIDE FACTOR
+
+    DIVIDE  shift, and go to state 15
+    MULT    shift, and go to state 16
+
+    $default  reduce using rule 4 (EXPR)
+
+
+State 21
+
+    7 TERM: TERM DIVIDE FACTOR •
+
+    $default  reduce using rule 7 (TERM)
+
+
+State 22
+
+    6 TERM: TERM MULT FACTOR •
+
+    $default  reduce using rule 6 (TERM)
